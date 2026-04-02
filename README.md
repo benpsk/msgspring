@@ -62,6 +62,7 @@ Install dependencies and start the API:
 ```bash
 cd backend
 npm install
+npm run migrate
 npm run start:dev
 ```
 
@@ -69,7 +70,9 @@ The backend runs on `http://localhost:3000` by default.
 
 Notes:
 
-- The `demo_requests` table is created automatically on first write if it does not already exist.
+- The backend uses TypeORM for PostgreSQL access and migrations.
+- Run `npm run migrate` after configuring `DATABASE_URL` and before starting the backend.
+- Deployment runs backend migrations before the PM2 restart.
 - The API is prefixed with `/api`, so the submission endpoint is `POST /api/contact`.
 
 ### 2. Frontend
@@ -101,6 +104,7 @@ Open `http://localhost:3001`.
 
 ```bash
 cd backend
+npm run migrate:status
 npm run lint
 npm run build
 npm run test
