@@ -1,12 +1,16 @@
 import { Controller, Get } from '@nestjs/common';
+import { SkipThrottle } from '@nestjs/throttler';
+import { ResponseMessage } from './common/api/response-message.decorator';
 import { AppService } from './app.service';
 
-@Controller()
+@Controller('health')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @SkipThrottle()
+  @ResponseMessage('health status fetched successfully.')
+  getHealth() {
+    return this.appService.getHealth();
   }
 }

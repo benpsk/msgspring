@@ -12,10 +12,13 @@ describe('AppController', () => {
     }).compile();
   });
 
-  describe('getHello', () => {
-    it('should return "Hello World!"', () => {
+  describe('getHealth', () => {
+    it('should return the service health payload', () => {
       const appController = app.get(AppController);
-      expect(appController.getHello()).toBe('Hello World!');
+      expect(appController.getHealth()).toEqual({
+        status: 'ok',
+        service: 'messagespring-backend',
+      });
     });
   });
 });

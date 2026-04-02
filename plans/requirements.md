@@ -25,15 +25,15 @@
 - [ ] Verify the frontend passes lint and production build
 
 ## Backend Checklist
-- [ ] Add PostgreSQL configuration and environment variable handling
-- [ ] Define the data model for contact requests: full name, email, country, message, timestamps
-- [ ] Create the persistence setup for storing submissions in PostgreSQL
-- [ ] Add a `POST` endpoint for request-demo submissions
-- [ ] Add server-side validation and input normalization
-- [ ] Add security protections for malformed payloads and unexpected input
-- [ ] Return clear API responses for success and validation failure cases
-- [ ] Add tests for the submission flow and validation rules
-- [ ] Confirm the backend builds and the relevant tests pass
+- [x] Add PostgreSQL configuration and environment variable handling
+- [x] Define the data model for contact requests: full name, email, country, message, timestamps
+- [x] Create the persistence setup for storing submissions in PostgreSQL
+- [x] Add a `POST` endpoint for request-demo submissions
+- [x] Add server-side validation and input normalization
+- [x] Add security protections for malformed payloads and unexpected input
+- [x] Return clear API responses for success and validation failure cases
+- [x] Add tests for the submission flow and validation rules
+- [x] Confirm the backend builds and the relevant tests pass
 
 ## Cross-Cutting Checklist
 - [ ] Align frontend and backend validation rules so the UX and API behavior match
