@@ -13,16 +13,16 @@
 4. Best UI/ UX experience for the customer
 
 ## Frontend Checklist
-- [ ] Rebuild the landing page from the Figma design in Next.js App Router
-- [ ] Make the page responsive for desktop and mobile
-- [ ] Replace starter metadata with project-specific title and description
-- [ ] Bring Figma images/assets into the frontend and optimize them for production use
-- [ ] Set up the final typography, spacing, colors, and visual styling to match the design direction
-- [ ] Build an accessible "Request a Demo" form with proper labels, helper copy, and button states
-- [ ] Add client-side validation for full name, email, country, and optional message
-- [ ] Show useful loading, success, and error states during form submission
-- [ ] Connect the form submission flow to the backend API
-- [ ] Verify the frontend passes lint and production build
+- [x] Rebuild the landing page from the Figma design in Next.js App Router
+- [x] Make the page responsive for desktop and mobile
+- [x] Replace starter metadata with project-specific title and description
+- [x] Bring Figma images/assets into the frontend and optimize them for production use
+- [x] Set up the final typography, spacing, colors, and visual styling to match the design direction
+- [x] Build an accessible "Request a Demo" form with proper labels, helper copy, and button states
+- [x] Add client-side validation for full name, email, country, and optional message
+- [x] Show useful loading, success, and error states during form submission
+- [x] Connect the form submission flow to the backend API
+- [x] Verify the frontend passes lint and production build
 
 ## Backend Checklist
 - [x] Add PostgreSQL configuration and environment variable handling
@@ -36,9 +36,9 @@
 - [x] Confirm the backend builds and the relevant tests pass
 
 ## Cross-Cutting Checklist
-- [ ] Align frontend and backend validation rules so the UX and API behavior match
-- [ ] Document local setup, environment variables, database setup, and run commands in the README
-- [ ] Add a short explanation of the implementation approach and tradeoffs
+- [x] Align frontend and backend validation rules so the UX and API behavior match
+- [x] Document local setup, environment variables, database setup, and run commands in the README
+- [x] Add a short explanation of the implementation approach and tradeoffs
 - [ ] If time allows, prepare AWS EC2 + GitHub Actions deployment notes for the bonus requirement
 
 ## Bonus
