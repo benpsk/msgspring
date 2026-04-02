@@ -1,37 +1,12 @@
-# Messagespring
+# MsgSpring 
 
-Full-stack "Request a Demo" implementation based on the provided Figma landing page.
+Local development setup for the `frontend` and `backend` apps in this repository.
 
-## Stack
+## Apps
 
-- `frontend/`: Next.js 16 App Router
-- `backend/`: NestJS 11
+- `frontend/`: Next.js 16 App Router app
+- `backend/`: NestJS 11 API
 - Database: PostgreSQL
-
-## What’s Implemented
-
-- Responsive landing page rebuilt in Next.js from the Figma structure
-- Local image assets served from `frontend/public/images/landing`
-- Client-side form validation and submission states
-- NestJS API with:
-  - `GET /api/health`
-  - `POST /api/contact`
-- PostgreSQL persistence for contact request submissions
-- Validation, input normalization, throttling, CORS, and helmet hardening
-- Postman collection for local API testing
-
-## Project Structure
-
-```text
-.
-├── frontend/
-│   ├── app/
-│   └── public/images/landing/
-├── backend/
-│   └── src/
-├── plans/
-└── postman/
-```
 
 ## Prerequisites
 
@@ -39,116 +14,114 @@ Full-stack "Request a Demo" implementation based on the provided Figma landing p
 - npm 10+
 - A local PostgreSQL instance
 
-## Local Setup
+## Install Dependencies
 
-### 1. Backend
+Install each app separately:
+
+```bash
+cd frontend
+npm install
+```
+
+```bash
+cd backend
+npm install
+```
+
+## Backend Setup
+
+1. Copy the example environment file:
 
 ```bash
 cd backend
 cp .env.example .env
 ```
 
-Set `DATABASE_URL` in `backend/.env` to your local PostgreSQL connection string.
+2. Create the PostgreSQL database used by `DATABASE_URL`.
 
 Example:
 
-```env
-DATABASE_URL=postgres://postgres:postgres@localhost:5432/messagespring
-FRONTEND_ORIGIN=http://localhost:3001
+```bash
+createdb messagespring
 ```
 
-Install dependencies and start the API:
+3. Review `backend/.env` and update values if your local setup differs:
+
+```env
+PORT=3000
+DATABASE_URL=postgres://db_user:db_pwd@localhost:5432/msgspring
+DATABASE_SSL=false
+DATABASE_MAX_CONNECTIONS=10
+FRONTEND_ORIGIN=http://localhost:3001
+THROTTLE_TTL_MS=60000
+THROTTLE_LIMIT=10
+```
+
+4. Run migrations:
 
 ```bash
 cd backend
-npm install
 npm run migrate
+```
+
+5. Start the API:
+
+```bash
+cd backend
 npm run start:dev
 ```
 
-The backend runs on `http://localhost:3000` by default.
+6. Run the backend tests:
 
-Notes:
+```bash
+npm run test
+npm run test:e2e
+```
 
-- The backend uses TypeORM for PostgreSQL access and migrations.
-- Run `npm run migrate` after configuring `DATABASE_URL` and before starting the backend.
-- Deployment runs backend migrations before the PM2 restart.
-- The API is prefixed with `/api`, so the submission endpoint is `POST /api/contact`.
+The backend listens on `http://localhost:3000` by default.
 
-### 2. Frontend
+Useful backend endpoints:
+
+- `GET /api/health`
+- `POST /api/contact`
+
+## Frontend Setup
+
+1. Copy the example environment file:
 
 ```bash
 cd frontend
 cp .env.example .env.local
 ```
 
-Default frontend environment:
+2. Confirm the API base URL points to the backend:
 
 ```env
 NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
 ```
 
-Install dependencies and start the Next.js app on a different port from the backend:
+3. Start the frontend on a different port from the backend:
 
 ```bash
 cd frontend
-npm install
 npm run dev -- --port 3001
 ```
 
 Open `http://localhost:3001`.
 
-## Validation Commands
-
-### Backend
+4. Run the frontend end-to-end tests.
 
 ```bash
-cd backend
-npm run migrate:status
-npm run lint
-npm run build
-npm run test
 npm run test:e2e
 ```
 
-### Frontend
+### Approach
+- this is an ai-driven project.
+- almost all of the code were written by ai.
+- i use codex cli.
+- the development of both backend + frontend take almost 2 hours.
+- the github ci directly deploy to digital ocean instance.
+- you can access the demo here - 
+- https://msgspring.lexerlabs.com
 
-```bash
-cd frontend
-npm run lint
-npm run build
-```
 
-## Postman
-
-Import these files into Postman:
-
-- `postman/messagespring-backend.postman_collection.json`
-- `postman/messagespring-local.postman_environment.json`
-
-They include:
-
-- `GET /api/health`
-- `POST /api/contact`
-- an invalid submission request for validation testing
-
-## Approach
-
-### Frontend
-
-- Kept the landing page as a Server Component and isolated browser-only form behavior in a Client Component.
-- Used local `next/image` assets for stable production-friendly image handling.
-- Matched the Figma layout direction with a responsive hero, category mosaic, and split form panel.
-- Added inline validation, accessible labels, error messaging, loading state, and success feedback.
-
-### Backend
-
-- Replaced the Nest starter route with a dedicated request-demo flow.
-- Centralized app hardening with global validation, CORS, throttling, and helmet.
-- Used PostgreSQL via `pg` with a small database service instead of adding a heavier ORM.
-- Normalized incoming values before persistence and returned a compact submission payload to the frontend.
-
-## Current Notes
-
-- The bonus AWS EC2 + GitHub Actions deployment work is not implemented yet.
-- Package-level `frontend/README.md` and `backend/README.md` are still the generated starter files; use this root README as the current project documentation.
