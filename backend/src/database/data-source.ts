@@ -10,25 +10,42 @@ type DatabaseConnectionConfig = {
   databaseUrl?: string;
   databaseSsl?: string | boolean;
   databaseMaxConnections?: string | number;
+  databaseReadReplicaUrls?: string[];
 };
 
 const entities = [ContactRequestEntity];
 const migrations = [CreateDemoRequests1743552000000];
 
+function normalizeReplicaUrls(value?: string | string[]): string[] {
+  if (!value) {
+    return [];
+  }
+
+  if (Array.isArray(value)) {
+    return value.filter(Boolean);
+  }
+
+  return value
+    .split(',')
+    .map((url) => url.trim())
+    .filter(Boolean);
+}
+
 function buildDataSourceOptions({
   databaseUrl,
   databaseSsl,
   databaseMaxConnections,
+  databaseReadReplicaUrls,
 }: DatabaseConnectionConfig): DataSourceOptions {
   if (!databaseUrl) {
     throw new Error('DATABASE_URL is not configured.');
   }
 
   const parsedDatabaseMaxConnections = Number(databaseMaxConnections ?? 10);
+  const normalizedReplicaUrls = normalizeReplicaUrls(databaseReadReplicaUrls);
 
-  return {
-    type: 'postgres',
-    url: databaseUrl,
+  const baseOptions = {
+    type: 'postgres' as const,
     entities,
     migrations,
     synchronize: false,
@@ -43,6 +60,27 @@ function buildDataSourceOptions({
         }
       : false,
   };
+
+  if (normalizedReplicaUrls.length > 0) {
+    return {
+      ...baseOptions,
+      replication: {
+        master: {
+          type: 'postgres',
+          url: databaseUrl,
+        },
+        slaves: normalizedReplicaUrls.map((url) => ({
+          type: 'postgres',
+          url,
+        })),
+      },
+    };
+  }
+
+  return {
+    ...baseOptions,
+    url: databaseUrl,
+  };
 }
 
 export function getTypeOrmModuleOptions(
@@ -54,6 +92,9 @@ export function getTypeOrmModuleOptions(
     databaseMaxConnections: configService.get<string | number>(
       'DATABASE_MAX_CONNECTIONS',
     ),
+    databaseReadReplicaUrls: configService.get<string | string[] | undefined>(
+      'DATABASE_READ_REPLICA_URLS',
+    ),
   });
 }
 
@@ -63,6 +104,9 @@ export function createMigrationDataSourceFromEnv(): DataSource {
       databaseUrl: process.env.DATABASE_URL,
       databaseSsl: process.env.DATABASE_SSL,
       databaseMaxConnections: process.env.DATABASE_MAX_CONNECTIONS,
+      databaseReadReplicaUrls: normalizeReplicaUrls(
+        process.env.DATABASE_READ_REPLICA_URLS,
+      ),
     }),
   );
 }

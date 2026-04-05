@@ -50,8 +50,12 @@ describe('ContactService', () => {
       message: '  Need a walkthrough\r\n',
     });
 
-    expect(contactRequestsRepository.create).toHaveBeenCalledWith(preparedRequest);
-    expect(contactRequestsRepository.save).toHaveBeenCalledWith(preparedRequest);
+    expect(contactRequestsRepository.create).toHaveBeenCalledWith(
+      preparedRequest,
+    );
+    expect(contactRequestsRepository.save).toHaveBeenCalledWith(
+      preparedRequest,
+    );
     expect(result).toEqual({
       id: 7,
       submitted_at: '2026-04-02T01:02:03.000Z',
@@ -81,7 +85,11 @@ describe('ContactService', () => {
       message: '   ',
     });
 
-    expect(contactRequestsRepository.create).toHaveBeenCalledWith(preparedRequest);
-    expect(contactRequestsRepository.save).toHaveBeenCalledWith(preparedRequest);
+    expect(contactRequestsRepository.create).toHaveBeenCalledWith(
+      preparedRequest,
+    );
+    expect(contactRequestsRepository.save).toHaveBeenCalledWith(
+      preparedRequest,
+    );
   });
 });

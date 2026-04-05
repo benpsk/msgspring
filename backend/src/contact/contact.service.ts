@@ -25,9 +25,8 @@ export class ContactService {
       message: normalizeOptionalMessage(createContactDto.message) ?? null,
     });
 
-    const createdRequest = await this.contactRequestsRepository.save(
-      preparedRequest,
-    );
+    const createdRequest =
+      await this.contactRequestsRepository.save(preparedRequest);
 
     return {
       id: createdRequest.id,

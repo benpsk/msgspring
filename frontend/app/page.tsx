@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { DesktopLandingPage } from "./_components/landing/DesktopLandingPage";
-import { MobileLandingPage } from "./_components/landing/MobileLandingPage";
+import { LandingPage } from "./_components/landing/LandingPage";
 import { countryOptions } from "./_data/landing-content";
 
 export const metadata: Metadata = {
@@ -16,14 +15,7 @@ const apiBaseUrl =
 export default function Home() {
   return (
     <main className="flex-1 bg-[#f9fafc] text-[#262626]">
-      <DesktopLandingPage
-        apiBaseUrl={apiBaseUrl}
-        countryOptions={countryOptions}
-      />
-      <MobileLandingPage
-        apiBaseUrl={apiBaseUrl}
-        countryOptions={countryOptions}
-      />
+      <LandingPage apiBaseUrl={apiBaseUrl} countryOptions={countryOptions} />
     </main>
   );
 }

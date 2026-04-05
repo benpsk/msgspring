@@ -14,6 +14,12 @@ export const envValidationSchema = Joi.object({
   }),
   DATABASE_SSL: Joi.boolean().truthy('true').falsy('false').default(false),
   DATABASE_MAX_CONNECTIONS: Joi.number().integer().positive().default(10),
+  DATABASE_READ_REPLICA_URLS: Joi.alternatives()
+    .try(
+      Joi.string().pattern(postgresUrlPattern),
+      Joi.array().items(Joi.string().pattern(postgresUrlPattern)),
+    )
+    .default([]),
   FRONTEND_ORIGIN: Joi.string().default('http://localhost:3000'),
   THROTTLE_TTL_MS: Joi.number().integer().positive().default(60000),
   THROTTLE_LIMIT: Joi.number().integer().positive().default(10),
