@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from '../database/database.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { ContactController } from './contact.controller';
 import { ContactService } from './contact.service';
+import { ContactRequestEntity } from './entities/contact-request.entity';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [TypeOrmModule.forFeature([ContactRequestEntity])],
   controllers: [ContactController],
   providers: [ContactService],
   exports: [ContactService],

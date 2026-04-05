@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { isDatabaseSslEnabled } from './database.utils';
-import { ContactRequestEntity } from './entities/contact-request.entity';
+import { ContactRequestEntity } from '../contact/entities/contact-request.entity';
 import { CreateDemoRequests1743552000000 } from './migrations/1743552000000-create-demo-requests';
 
 type DatabaseConnectionConfig = {
