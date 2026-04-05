@@ -11,6 +11,7 @@ test.describe("mobile landing page", () => {
     page,
   }) => {
     await page.goto("/");
+    await page.waitForLoadState("networkidle");
 
     const mobilePage = page.getByTestId("mobile-landing-page");
     const heroImage = mobilePage.getByRole("img", {
@@ -48,10 +49,25 @@ test.describe("mobile landing page", () => {
   test("keeps the success message visible below the button", async ({
     page,
   }) => {
+    const corsHeaders = {
+      "access-control-allow-origin": "http://127.0.0.1:3005",
+      "access-control-allow-methods": "POST, OPTIONS",
+      "access-control-allow-headers": "Content-Type",
+    };
+
     await page.route("**/api/contact", async (route) => {
+      if (route.request().method() === "OPTIONS") {
+        await route.fulfill({
+          status: 204,
+          headers: corsHeaders,
+        });
+        return;
+      }
+
       await route.fulfill({
         status: 200,
         contentType: "application/json",
+        headers: corsHeaders,
         body: JSON.stringify({
           success: true,
           message: "contact request submitted successfully.",
@@ -65,11 +81,12 @@ test.describe("mobile landing page", () => {
     });
 
     await page.goto("/");
+    await page.waitForLoadState("networkidle");
 
     const form = page.getByTestId("mobile-contact-form");
     const button = form.getByRole("button", { name: "Request Demo" });
-    const status = page.getByTestId("mobile-contact-form-status");
-    const helper = page.getByTestId("mobile-contact-form-helper");
+    const status = form.getByTestId("mobile-contact-form-status");
+    const helper = form.getByTestId("mobile-contact-form-helper");
 
     await form.getByLabel("Full Name *").fill("Ada Lovelace");
     await form.getByLabel("Email *").fill("ada@example.com");
@@ -80,6 +97,7 @@ test.describe("mobile landing page", () => {
 
     await button.click();
 
+    await expect(status).toBeVisible();
     await expect(status).toHaveText(
       "Request sent successfully. We'll get back to you within 2 hours.",
     );
